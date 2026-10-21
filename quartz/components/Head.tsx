@@ -43,6 +43,19 @@ export default (() => {
       <head>
         <title>{title}</title>
         <meta charSet="utf-8" />
+        {/* Start new visitors in dark mode before Quartz initializes its theme toggle. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  let theme = "dark"
+  try {
+    theme = localStorage.getItem("theme") ?? theme
+    localStorage.setItem("theme", theme)
+  } catch {}
+  document.documentElement.setAttribute("saved-theme", theme)
+})()`,
+          }}
+        />
         {coreStylesheet && <link rel="preload" href={coreStylesheet} as="style" />}
         {coreScript && coreScript.contentType === "external" && (
           <link rel="preload" href={coreScript.src} as="script" />
